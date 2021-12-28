@@ -3,7 +3,7 @@
     <base-card>
       <header>
         <h3>{{ titleFor }}</h3>
-        <base-button mode="flat" >Delete</base-button>
+        <base-button mode="flat" @click="deleteResourceKey(idFor)">Delete</base-button>
       </header>
       <p>{{ descriptionFor }}</p>
       <nav>
@@ -16,8 +16,9 @@
 <script>
 export default {
   name: "LearningResource",
-
-  props: ["titleFor", "descriptionFor", "linkFor"],
+  props: ["idFor", "titleFor", "descriptionFor", "linkFor"],
+  // We inject the key of the function from other component
+  inject: ["deleteResourceKey"],
 };
 </script>
 

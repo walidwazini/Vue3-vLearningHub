@@ -48,7 +48,9 @@ export default {
   provide() {
     return {
       allResources: this.storedResources,
+      // Provide key of the function to another component
       addResourceKey: this.addResource,
+      deleteResourceKey: this.removeResource
     };
   },
   computed: {
@@ -74,6 +76,11 @@ export default {
       this.selectedTab = "stored-resources";
       console.log("the resources ar");
     },
+    removeResource(resId){
+      const resIndex = this.storedResources.findIndex(res => res.id === resId)
+
+      this.storedResources.splice(resIndex, 1)
+    }
   },
 };
 </script>

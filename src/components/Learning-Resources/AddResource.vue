@@ -1,9 +1,18 @@
 <template>
+  <base-dialog v-if="inputInvalid" title="Invalid Input" @close="confirmError">
+    <template #default>
+      <p>One input is invalid.</p>
+      <p>Please check all input</p>
+    </template>
+    <template #actions>
+      <base-button @click="confirmError">Okay</base-button>
+    </template>
+  </base-dialog>
   <base-card>
     <form @submit.prevent="submitData">
       <div class="form-control">
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" ref="titleInput"  />
+        <input id="title" name="title" type="text" ref="titleInput" />
       </div>
       <div class="form-control">
         <label for="description">Description</label>
@@ -26,23 +35,37 @@
 </template>
 
 <script>
+import BaseButton from "../UI/BaseButton.vue";
 import BaseCard from "../UI/BaseCard.vue";
+import BaseDialog from "../UI/BaseDialog.vue";
 export default {
-  components: { BaseCard },
-  data(){
-
+  components: { BaseCard, BaseDialog, BaseButton },
+  data() {
+    return {
+      inputInvalid: false,
+    };
   },
   inject: ["addResourceKey"],
-  mounted(){
-
-  },
+  mounted() {},
   methods: {
     submitData() {
-      const enteredTitle = this.$refs.titleInput.value 
-      const enteredDesc = this.$refs.descInput.value 
-      const enteredUrl = this.$refs.linkInput.value
+      const enteredTitle = this.$refs.titleInput.value;
+      const enteredDesc = this.$refs.descInput.value;
+      const enteredUrl = this.$refs.linkInput.value;
+      const conditionOne =
+        enteredTitle.trim() === "" ||
+        enteredDesc.trim() === "" ||
+        enteredUrl.trim() === "";
+
+      if (conditionOne) {
+        this.inputInvalid = true;
+        return;
+      }
 
       this.addResourceKey(enteredTitle, enteredDesc, enteredUrl);
+    },
+    confirmError() {
+      this.inputInvalid = false;
     },
   },
 };
